@@ -7,21 +7,6 @@ Citizen.CreateThread(function()
     end
 end)
 
-
-
--- isBoss = nil
-
--- RegisterNetEvent('esx:setJob')
--- AddEventHandler('esx:setJob', function(job)
---     if job.name == Config.Job.Profession then
---         if job.grade_name == 'boss' then
---             isBoss = false
---         else
---             isBoss = true
---         end
---     end
--- end)
-
 function fetchLagerCars(category)
     local elements = {}
     
@@ -106,39 +91,36 @@ function buyVehicle(model, price, name)
 end
 
 function getPlayers()
-    local closestplayer = HT.Game.GetClosestPlayer()
-    local closePlayer = GetPlayerServerId(closestplayer)
-    local seller = GetPlayerServerId(PlayerId())
+  local closestplayer = HT.Game.GetClosestPlayer()
+  local closePlayer = GetPlayerServerId(closestplayer)
+  local seller = GetPlayerServerId(PlayerId())
 
-    HT.TriggerServerCallback('th-bilforhandler:getNearestPlayers', function(players)
-        local elements = {}
-        for i=1, #players, 1 do
-            if players[i].name ~= GetPlayerName(PlayerId()) then
-                local playerId = players[i].source
-                local firstName = players[i].firstname
-                local lastName = players[i].lastname
-                table.insert(elements, {
-                    title = 'Navn: ' .. players[i].firstname..' '..players[i].lastname,
-                    description = 'Tryk her for at sælge vedkommende en bil',
-                    icon = 'user',
-                    onSelect = function()
-                      chosseTheCar(playerId, firstName, lastName, seller)
-                  end
-                })
-            end
-        end
+  HT.TriggerServerCallback('th-bilforhandler:getNearestPlayers', function(players)
+      local options = {}
+      for k,v in pairs(players) do
+          local playerId = v.source
+          local firstName = v.firstname
+          local lastName = v.lastname
+          table.insert(options, {
+              title = 'Navn: ' .. v.firstname..' '..v.lastname,
+              description = 'Tryk her for at sælge vedkommende en bil',
+              icon = 'user',
+              onSelect = function()
+                  chosseTheCar(playerId, firstName, lastName, seller)
+              end
+          })
+      end
 
-
-        lib.registerContext({
-            id = 'sellveh_menu',
-            title = 'Sælg køretøj',
-            menu = 'main_menu',
-            onBack = function()
-            end,
-            options = elements,
-        })
-        lib.showContext('sellveh_menu')
-    end, closePlayer)
+      lib.registerContext({
+          id = 'sellveh_menu',
+          title = 'Sælg køretøj',
+          menu = 'main_menu',
+          onBack = function()
+          end,
+          options = options,
+      })
+      lib.showContext('sellveh_menu')
+  end, closePlayer)
 end
 
 CreateThread(function()

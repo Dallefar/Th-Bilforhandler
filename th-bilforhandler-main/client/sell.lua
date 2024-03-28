@@ -105,12 +105,16 @@ function sellVehicleToPlayer(model, plate, firstName, lastName, playerId, price,
 end
 
 function spawnVehicle(veh, plate, playerId, vehiclePrice,veh_type)
-        --HT.Game.SpawnVehicle(veh, Config.SpawnPoint.coords, Config.SpawnPoint.heading, function(veh)
-        --SetVehicleNumberPlateText(veh, plate)
-        --local props = HT.Game.GetVehicleProperties(veh)
-        vRP.teleport({Config.SpawnPoint.coords,Config.SpawnPoint.heading})
-        vRPg.spawnBoughtVehicle({veh_type, vehicle})
-        TriggerServerEvent('th-bilforhandler:giveVehToPlayer', plate, playerId, veh, veh_type)
+    HT.TriggerServerCallback('dalle:Bilforhandler', function(cb)    
+        if cb then
+            print('Virker og vagk elsker pik.')
+        else
+            print('Error')
+        end
+    end,veh_type, vehicle)
+    -- vRP.teleport({Config.SpawnPoint.coords,Config.SpawnPoint.heading})
+    -- vRPg.spawnBoughtVehicle({veh_type, vehicle})
+    TriggerServerEvent('th-bilforhandler:giveVehToPlayer', plate, playerId, veh, veh_type)
 end
 
 RegisterNetEvent('th-bilforhandler:targetIdClient', function(model, plate, firstName, lastName, playerId, vehiclePrice, seller, veh_type)

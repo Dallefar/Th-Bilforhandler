@@ -184,8 +184,3 @@ function notifyremovemoney(money)
         iconColor = '#0afc12'
     })
 end
-
-
-
-
-

@@ -87,14 +87,14 @@ HT.RegisterServerCallback('th-bilforhandler:getNearestPlayers', function(source,
     
     if xPlayer then
         vRP.getUserIdentity({xPlayer, function(identity)
-            if identity then
-                local name = identity.firstname .. " " .. identity.lastname
+            if identity.firstname and identity.name then
+                local name = identity.firstname .. " " .. identity.name
                 table.insert(players, {
                     source = closePlayer,
                     identifier = xPlayer,
                     name = name,
                     firstname = identity.firstname,
-                    lastname = identity.lastname,
+                    lastname = identity.name,
                 })
             else
                 print("Identity not found for player: " .. closePlayer)
@@ -108,12 +108,21 @@ HT.RegisterServerCallback('th-bilforhandler:getNearestPlayers', function(source,
 end)
 
 
+HT.RegisterServerCallback('dalle:Bilforhandler', function(source, cb)
+    local user_id = vRP.getUserId({source})
+    
+    vRP.teleport({Config.SpawnPoint.coords,Config.SpawnPoint.heading})
+    vRPg.spawnBoughtVehicle({veh_type, vehicle})
+    cb(true)
+end)
+
+
 HT.RegisterServerCallback('th-bilforhandler:sellVeh', function(source, cb, vehPrice, playerId, plate, model)
     xTarget = vRP.getUserId({playerId})
 
     playerMoney = vRP.getBankMoney({xTarget})
 
-    if playerMoney.money >= vehPrice then
+    if playerMoney >= vehPrice then
         cb(true)
     else
         cb(false)
@@ -182,6 +191,7 @@ RegisterNetEvent('th-bilforhandler:addDataToDatabase', function(playerId, model,
     local xTarget = vRP.getUserId({playerId})
     local buyerName = getName(xPlayer)
     local sellerName = getName(xTarget)
+
     MySQL.insert('INSERT INTO th_sold (bil, medarbejder, buyer, pris) VALUES (?, ?, ?, ?)', {
         model,
         sellerName,
@@ -256,10 +266,10 @@ HT.RegisterServerCallback('dalle:removemoney', function(source, cb, playermoney)
         ['@id'] = 1,
     }, function(result)
         if result and #result > 0 then
-            local money = tonumber(result[1].balance) -- Convert to number
+            local money = tonumber(result[1].balance) 
             local finalmoney = money - playermoney 
 
-            if money and finalmoney >= 0 then -- Check if money is valid and finalmoney is non-negative
+            if money and finalmoney >= 0 then 
                 MySQL.Async.execute('UPDATE business_fund SET balance = @balance WHERE id = @id', {
                     ['@id'] = 1,
                     ['@balance'] = finalmoney
@@ -268,17 +278,14 @@ HT.RegisterServerCallback('dalle:removemoney', function(source, cb, playermoney)
                         vRP.giveBankMoney({user_id, playermoney})
                         cb(true)
                     else
-                        cb(false) -- Report failure to update balance
+                        cb(false) 
                     end
                 end)
             else
-                cb(false) -- Report insufficient funds or invalid balance
+                cb(false) 
             end
         else
-            cb(false) -- Report error fetching balance
+            cb(false) 
         end
     end)
 end)
-
-
-

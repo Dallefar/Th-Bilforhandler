@@ -178,12 +178,6 @@ RegisterNetEvent(
 RegisterNetEvent("th-bilforhandler:giveVehToPlayer", function(plate, playerId, props, vehicle)
 	local xTarget = vRP.getUserId({ playerId })
 
-	-- MySQL.insert('INSERT INTO vrp_user_vehicles (user_id, vehicle_plate, vehicle) VALUES (?, ?, ?)', {
-	--      xTarget,
-	--      plate,
-	--      json.encode(props)
-	-- })
-
 	MySQL.Async.insert(
 		"INSERT INTO vrp_user_vehicles (user_id, vehicle, veh_type, vehicle_plate, impound, modifications, garage) VALUES (?, ?, ?, ?, ?, ?, ?)",
 		{
@@ -233,7 +227,6 @@ function getName(user_id)
 			end,
 		})
 	else
-		print("User Id is nil.")
 		return false
 	end
 end
@@ -291,10 +284,10 @@ HT.RegisterServerCallback("dalle:removemoney", function(source, cb, playermoney)
 		["@id"] = 1,
 	}, function(result)
 		if result and #result > 0 then
-			local money = tonumber(result[1].balance) -- Convert to number
+			local money = tonumber(result[1].balance)
 			local finalmoney = money - playermoney
 
-			if money and finalmoney >= 0 then -- Check if money is valid and finalmoney is non-negative
+			if money and finalmoney >= 0 then 
 				MySQL.Async.execute("UPDATE business_fund SET balance = @balance WHERE id = @id", {
 					["@id"] = 1,
 					["@balance"] = finalmoney,
@@ -303,14 +296,14 @@ HT.RegisterServerCallback("dalle:removemoney", function(source, cb, playermoney)
 						vRP.giveBankMoney({ user_id, playermoney })
 						cb(true)
 					else
-						cb(false) -- Report failure to update balance
+						cb(false) 
 					end
 				end)
 			else
-				cb(false) -- Report insufficient funds or invalid balance
+				cb(false) 
 			end
 		else
-			cb(false) -- Report error fetching balance
+			cb(false) 
 		end
 	end)
 end)

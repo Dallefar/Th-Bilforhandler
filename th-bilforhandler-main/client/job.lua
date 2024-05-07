@@ -42,7 +42,7 @@ function mainMenu(isBoss)
             icon = 'star',
             disabled = isBoss,
             onSelect = function()
-                bossMenu()
+                ossMenu()b
             end
         },
         }
@@ -98,14 +98,15 @@ function bossMenu1()
         onBack = function()
         end,
         options = {
-        {
+            -- Ikke lavet endnu kommer måske
+--[[         {
             title = 'Ansæt/fyr',
             description = 'Hyre eller fyr en person.',
             icon = 'address-book',
             onSelect = function()
                 lagerMenu()
             end
-        },
+        }, ]]
         {
             title = 'Bilforhandler finansieret',
             description = 'Bilforhandler bank konto.',

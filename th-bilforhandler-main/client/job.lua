@@ -42,7 +42,7 @@ function mainMenu(isBoss)
             icon = 'star',
             disabled = isBoss,
             onSelect = function()
-                ossMenu()b
+                bossMenu()
             end
         },
         }

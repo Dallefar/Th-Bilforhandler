@@ -1,4 +1,6 @@
 ###
+Credit til TH DEV for at lave grund scriptet :nerd:
+
 SQL:
     Hvis du i forvejen har sqlerne "vehicles" & "vehiclescategories" så fjern de to, og sæt vores ind.
     Husk at indsætte th_lager og th_sold i din SQL

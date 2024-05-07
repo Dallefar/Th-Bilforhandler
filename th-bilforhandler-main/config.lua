@@ -52,11 +52,11 @@ Config.bilKategorier = {
         description = 'Kategori for Off Road biler',
         icon = 'truck-monster'
     },
-    -- ['custom'] = {
-    --     title = 'Custom',
-    --     description = 'Kategori for custom biler',
-    --     icon = 'diamond' 
-    -- },
+    ['custom'] = {
+         title = 'Custom',
+         description = 'Kategori for custom biler',
+         icon = 'diamond' 
+    },
 }
 
 Config.Blip = {

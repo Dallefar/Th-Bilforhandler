@@ -47,12 +47,12 @@ for _, spawnPoint in ipairs(Config.demoSpawnPoints) do
                 onSelect = function()
                     job(function(isJob)
                         if isJob == true then
-                            local vehicle = HT.Game.GetVehicleInDirection()
+                            local vehicle = GetVehicleInDirection()
                             if DoesEntityExist(vehicle) then
                                 HT.Game.DeleteVehicle(vehicle)
                             end
                         elseif isJob == false then
-                            local vehicle = HT.Game.GetVehicleInDirection()
+                            local vehicle = GetVehicleInDirection()
                             if DoesEntityExist(vehicle) then
                                 HT.Game.DeleteVehicle(vehicle)
                             end

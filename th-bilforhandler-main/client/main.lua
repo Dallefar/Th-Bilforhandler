@@ -123,8 +123,9 @@ function getPlayers()
   end, closePlayer)
 end
 
+-- Laver blip --
 CreateThread(function()
-	local blip = AddBlipForCoord(Config.Blip.coords) -- ændrer disse koordinater
+	local blip = AddBlipForCoord(Config.Blip.coords)
 
 	SetBlipSprite (blip, Config.Blip.sprite)
 	SetBlipDisplay(blip, Config.Blip.display)
@@ -137,3 +138,18 @@ CreateThread(function()
 	EndTextCommandSetBlipName(blip)
 end)   
 
+
+-- Function til at finde bil --
+function GetVehicleInDirection()
+	local playerPed = PlayerPedId()
+	local coords = GetEntityCoords(playerPed)
+	local forwardVector = GetEntityForwardVector(playerPed)
+
+	local endCoords = coords + forwardVector * 5.0
+
+	local rayHandle =
+		StartShapeTestRay(coords.x, coords.y, coords.z, endCoords.x, endCoords.y, endCoords.z, 10, playerPed, 0)
+	local _, _, _, _, vehicle = GetShapeTestResult(rayHandle)
+
+	return vehicle
+end
